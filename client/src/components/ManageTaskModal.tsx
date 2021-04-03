@@ -27,7 +27,7 @@ export const ManageTaskModal: React.FC<Props> = ({
 }) => {
   const [title, setTitle] = useState(task ? task.title : '');
   const [description, setDescription] = useState(task ? task.description : '');
-  const [deadline, setDeadline] = useState(format(task ? parseISO(task.deadline) : new Date(), "yyyy-MM-dd'T'hh:mm"));
+  const [deadline, setDeadline] = useState(format(task ? parseISO(task.deadline) : new Date(), "yyyy-MM-dd'T'HH:mm"));
 
   const onTitleChange = (event: any) => setTitle(event.target.value);
   const onDescriptionChange = (event: any) => setDescription(event.target.value);

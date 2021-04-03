@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format, parseISO } from 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -64,7 +65,7 @@ export const Task: React.FC<Props> = ({
           <CardActionArea>
             <Typography>{task.title}</Typography>
             <Typography>{task.description}</Typography>
-            <Typography>{task.deadline}</Typography>
+            <Typography>{format(parseISO(task.deadline), 'dd/MM/yyyy HH:mm')}</Typography>
             Complete: {task.complete ? 'Yes' : 'No'}
           </CardActionArea>
         </CardContent>
