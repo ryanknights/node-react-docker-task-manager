@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format, parseISO } from 'date-fns';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -16,7 +17,7 @@ export type Props = {
 export type ManageTaskPayload = {
   title: string;
   description: string;
-  deadline: string | Date;
+  deadline: string;
 };
 
 export const ManageTaskModal: React.FC<Props> = ({
@@ -26,7 +27,7 @@ export const ManageTaskModal: React.FC<Props> = ({
 }) => {
   const [title, setTitle] = useState(task ? task.title : '');
   const [description, setDescription] = useState(task ? task.description : '');
-  const [deadline, setDeadline] = useState<string | Date>(task ? task.deadline : '2020-05-24T10:30');
+  const [deadline, setDeadline] = useState(format(task ? parseISO(task.deadline) : new Date(), "yyyy-MM-dd'T'hh:mm"));
 
   const onTitleChange = (event: any) => setTitle(event.target.value);
   const onDescriptionChange = (event: any) => setDescription(event.target.value);
