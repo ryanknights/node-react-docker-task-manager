@@ -2,6 +2,19 @@ import { Response, Request } from 'express';
 import { Task } from '../db/models';
 import { TasksService } from '../services/TasksService';
 
+export const getTasks = async (req: Request, res: Response) => {
+  try {
+    const tasks = await Task.findAll({
+      order: [
+        ['id', 'ASC'],
+      ]
+    });
+    return res.send(tasks);
+  } catch (e) {
+    return res.status(500).send(e);
+  }
+};
+
 export const createNewTask = async (req: Request, res: Response) => {
   try {
     const task = await Task.create({
@@ -11,7 +24,7 @@ export const createNewTask = async (req: Request, res: Response) => {
       complete: req.body.complete,
       ListId: req.body.listId,
     });
-    return res.send(task);
+    return res.status(201).send(task);
   } catch (e) {
     return res.status(500).send(e);
   }
@@ -29,6 +42,15 @@ export const deleteTasks = async (req: Request, res: Response) => {
     return res.status(500).send(e);
   }
 };
+
+export const getTask = async (req: Request, res: Response) => {
+  try {
+    const task = await Task.findByPk(req.params.taskId);
+    return res.send(task);
+  } catch (e) {
+    return res.status(500).send(e);
+  }
+}
 
 export const deleteTask = async (req: Request, res: Response) => {
   try {
