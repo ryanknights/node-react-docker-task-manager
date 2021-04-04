@@ -52,7 +52,7 @@ export const MoveTasksModal: React.FC<Props> = ({
   };
 
   const listOptions = lists.filter((list: ListModel) => list.id !== currentList.id)
-    .map((list) => <MenuItem value={list.id}>{list.name}</MenuItem>);
+    .map((list) => <MenuItem value={list.id} key={list.id}>{list.name}</MenuItem>);
 
   return (
     <Dialog open={true} onClose={onCancel} maxWidth="lg">
