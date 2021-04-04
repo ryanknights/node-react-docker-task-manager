@@ -34,5 +34,8 @@ Frontend tests can be run using `yarn test` inside the `client` directory.
 ## Future Improvements
 - Use Redux or similar state management in frontend to avoid fetching lists after most actions.
 - Add drag/drop to frontend.
+- Add validation to frontend forms.
+- Add more comprehensive error handling for frontend network requests.  
 - Add more comprehensive tests for frontend components.
 - Complete backend route tests.
+- Add better validation to backend routes. 
