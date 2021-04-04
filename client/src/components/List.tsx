@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
     minWidth: 300,
     marginRight: 20,
+    padding: 20,
   },
   buttonMargin: {
     marginBottom: 10,
@@ -82,7 +83,7 @@ export const List: React.FC<Props> = ({
 
   return (
     <Paper variant="outlined" className={classes.container}>
-      <Typography>
+      <Typography variant="h6">
         {list.name} - {list.Tasks.length} task(s)
       </Typography>
       <Button
@@ -105,7 +106,7 @@ export const List: React.FC<Props> = ({
       >
         Add New Task
       </Button>
-      <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+      <ButtonGroup variant="contained" color="primary" fullWidth aria-label="contained primary button group">
         <Button
           onClick={deleteTasks}
           color="secondary"

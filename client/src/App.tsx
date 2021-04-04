@@ -10,13 +10,22 @@ import { Lists } from './components/Lists';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: 50,
+    paddingTop: 60,
   },
   title: {
     flexGrow: 1,
   },
   addForm: {
+    marginBottom: 20,
+  },
+  nameInput: {
     marginBottom: 10,
+  },
+  appBar: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 }));
 
@@ -45,14 +54,23 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <div className={classes.root}>
-        <AppBar position="absolute">
+        <AppBar position="absolute" className={classes.appBar}>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Task Board
           </Typography>
         </AppBar>
         <main>
           <div className={classes.addForm}>
-            <TextField label="List Name" variant="outlined" value={listName} onChange={onListNameChange} fullWidth placeholder="My awesome list" />
+            <TextField
+              label="List Name"
+              variant="outlined"
+              value={listName}
+              onChange={onListNameChange}
+              fullWidth
+              placeholder="My awesome list"
+              size="small"
+              className={classes.nameInput}
+            />
             <Button onClick={addList} fullWidth color="primary" variant="contained" disabled={!listName}>Add List</Button>
           </div>
           <Lists lists={lists} getLists={getLists} />

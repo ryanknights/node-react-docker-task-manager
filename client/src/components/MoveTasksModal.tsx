@@ -74,8 +74,8 @@ export const MoveTasksModal: React.FC<Props> = ({
       <DialogActions>
         <Button onClick={onCancel} color="primary">
           Cancel
-          </Button>
-        <Button onClick={handleSubmit} color="primary">
+        </Button>
+        <Button onClick={handleSubmit} color="primary" disabled={!newListId}>
           Move Tasks
         </Button>
       </DialogActions>
