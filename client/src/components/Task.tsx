@@ -11,6 +11,7 @@ import TaskService from '../services/TaskService';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Task as TaskModel } from '../models';
 import { ManageTaskModal, ManageTaskPayload } from './ManageTaskModal';
 
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: 300,
     marginBottom: 10,
+    position: 'relative',
   },
   cardTextMargin: {
     marginBottom: 10,
@@ -32,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
   completeText: {
     display: 'flex',
     alignItems: 'center',
+  },
+  loadingSpinner: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 }));
 
@@ -42,21 +49,26 @@ export const Task: React.FC<Props> = ({
   onMarkToAction,
 }) => {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const classes = useStyles();
 
   const updateTask = (data: ManageTaskPayload) => {
+    setLoading(true);
     return TaskService.update(task.id, {
       title: data.title,
       description: data.description,
       deadline: data.deadline,
     })
       .then(onUpdateModalClose)
-      .then(getLists);
+      .then(getLists)
+      .finally(() => setLoading(false));
   };
   const completeTask = () => {
+    setLoading(true);
     return TaskService.complete(task.id)
-      .then(getLists);
+      .then(getLists)
+      .finally(() => setLoading(false));
   };
 
   const handleMarkAsAction = () => onMarkToAction(task.id);
@@ -66,6 +78,9 @@ export const Task: React.FC<Props> = ({
   return (
     <>
       <Card variant="outlined" className={classes.container}>
+        { loading && (
+          <CircularProgress className={classes.loadingSpinner} size={15} />
+        )}
         <CardContent>
           <Typography variant="h6">{task.title}</Typography>
           <Typography variant="body2" className={classes.cardTextMargin}>{task.description}</Typography>
@@ -75,8 +90,8 @@ export const Task: React.FC<Props> = ({
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={onUpdateModalOpen}>Update</Button>
-          <Button size="small" onClick={completeTask} disabled={task.complete}>Complete</Button>
+          <Button size="small" onClick={onUpdateModalOpen} disabled={loading}>Update</Button>
+          <Button size="small" onClick={completeTask} disabled={task.complete || loading}>Complete</Button>
           <FormControlLabel
             control={(
               <Checkbox

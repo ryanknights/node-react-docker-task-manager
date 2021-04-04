@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AppBar from '@material-ui/core/AppBar';
 import ListService from './services/ListService';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { List as ListModel } from './models';
 import { Lists } from './components/Lists';
 
@@ -27,20 +28,29 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  loadingSpinner: {
+    marginLeft: 10,
+  },
 }));
 
 const App: React.FC = () => {
   const [lists, setLists] = useState<ListModel[]>([]);
   const [listName, setListName] = useState('');
+  const [adding, setAdding] = useState(false);
+  const [fetchingLists, setFetchingLists] = useState(false);
 
   const getLists = () => {
+    setFetchingLists(true);
     return ListService.getAll()
-      .then(lists => setLists(lists));
+      .then(lists => setLists(lists))
+      .finally(() => setFetchingLists(false));
   }
   const addList = () => {
+    setAdding(true);
     return ListService.create(listName)
       .then(getLists)
-      .then(() => setListName(''));
+      .then(() => setListName(''))
+      .finally(() => setAdding(false));
   };
 
   const onListNameChange = (event: any) => setListName(event.target.value);
@@ -57,6 +67,9 @@ const App: React.FC = () => {
         <AppBar position="absolute" className={classes.appBar}>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Task Board
+            {fetchingLists && (
+              <CircularProgress className={classes.loadingSpinner} size={20} color="secondary" />
+            )}
           </Typography>
         </AppBar>
         <main>
@@ -71,7 +84,7 @@ const App: React.FC = () => {
               size="small"
               className={classes.nameInput}
             />
-            <Button onClick={addList} fullWidth color="primary" variant="contained" disabled={!listName}>Add List</Button>
+            <Button onClick={addList} fullWidth color="primary" variant="contained" disabled={!listName || adding}>Add List</Button>
           </div>
           <Lists lists={lists} getLists={getLists} />
         </main>
